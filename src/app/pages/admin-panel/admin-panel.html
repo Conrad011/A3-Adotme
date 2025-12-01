@@ -1,0 +1,204 @@
+<div class="admin-container app-container">
+    <app-header />
+    <main class="admin-content app-content">
+        <div class="container">
+            <div class="admin-header">
+                <h1><i class="fa-solid fa-paw"></i>Painel Administrativo</h1>
+                <p>Gerencie os pets disponíveis para adoção</p>
+            </div>
+
+            <!-- Botão Adicionar Pet -->
+            <div class="admin-actions">
+                <button class="btn-primary" (click)="startAddPet()" *ngIf="!showAddForm">
+                    + Adicionar Novo Pet
+                </button>
+            </div>
+
+            <!-- Formulário de Adição/Edição -->
+            <div class="pet-form" *ngIf="showAddForm">
+                <h2>{{ editingPet ? 'Editar Pet' : 'Adicionar Novo Pet' }}</h2>
+
+                <div class="form-grid">
+                    <!-- Nome (Input de texto) -->
+                    <div class="form-group">
+                        <label>Nome *</label>
+                        <input type="text" [(ngModel)]="newPet.name" placeholder="Digite o nome do pet">
+                    </div>
+
+                    <!-- Espécie (Botões) -->
+                    <div class="form-group">
+                        <label>Espécie *</label>
+                        <div class="button-group">
+                            <button type="button" [class.active]="newPet.species === 'DOG'"
+                                (click)="newPet.species = 'DOG'">
+                                <i class="fa-solid fa-dog"></i> Cachorro
+                            </button>
+                            <button type="button" [class.active]="newPet.species === 'CAT'"
+                                (click)="newPet.species = 'CAT'">
+                                <i class="fa-solid fa-cat"></i> Gato
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Raça (Botões + Input condicional) -->
+                    <div class="form-group raca-area">
+                        <label>Raça *</label>
+                        <div class="button-group">
+                            <button type="button" [class.active]="newPet.breed === 'SRD'"
+                                (click)="newPet.breed = 'SRD'; customBreed = ''">
+                                <i class="fa-solid fa-shield-dog"></i> SRD
+                            </button>
+                            <button type="button" [class.active]="newPet.breed !== 'SRD'"
+                                (click)="newPet.breed = 'OTHER'">
+                                <i class="fa-solid fa-otter"></i> Outro
+                            </button>
+                        </div>
+                        <input *ngIf="newPet.breed !== 'SRD'" type="text" [(ngModel)]="customBreed"
+                            (input)="newPet.breed = customBreed" placeholder="Digite a raça">
+                    </div>
+
+                    <!-- Idade (Botões) -->
+                    <div class="form-group">
+                        <label>Idade *</label>
+                        <div class="button-group">
+                            <button type="button" [class.active]="newPet.ageCategory === 'FILHOTE'"
+                                (click)="newPet.ageCategory = 'FILHOTE'">
+                                <i class="fa-solid fa-baby"></i> Filhote
+                            </button>
+                            <button type="button" [class.active]="newPet.ageCategory === 'ADULTO'"
+                                (click)="newPet.ageCategory = 'ADULTO'">
+                                <i class="fa-solid fa-child"></i> Adulto
+                            </button>
+                            <button type="button" [class.active]="newPet.ageCategory === 'IDOSO'"
+                                (click)="newPet.ageCategory = 'IDOSO'">
+                                <i class="fa-solid fa-person-cane"></i> Idoso
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Porte (Botões) -->
+                    <div class="form-group">
+                        <label>Porte *</label>
+                        <div class="button-group">
+                            <button type="button" [class.active]="newPet.size === 'SMALL'"
+                                (click)="newPet.size = 'SMALL'">
+                                Pequeno
+                            </button>
+                            <button type="button" [class.active]="newPet.size === 'MEDIUM'"
+                                (click)="newPet.size = 'MEDIUM'">
+                                Médio
+                            </button>
+                            <button type="button" [class.active]="newPet.size === 'LARGE'"
+                                (click)="newPet.size = 'LARGE'">
+                                Grande
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Gênero (Botões) -->
+                    <div class="form-group">
+                        <label>Gênero *</label>
+                        <div class="button-group">
+                            <button type="button" [class.active]="newPet.gender === 'MALE'"
+                                (click)="newPet.gender = 'MALE'">
+                                <i class="fa-solid fa-mars"></i> Macho
+                            </button>
+                            <button type="button" [class.active]="newPet.gender === 'FEMALE'"
+                                (click)="newPet.gender = 'FEMALE'">
+                                <i class="fa-solid fa-venus"></i> Fêmea
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Saúde (Botões) -->
+                    <div class="form-group">
+                        <label>Saúde *</label>
+                        <div class="button-group health-buttons">
+                            <button type="button" [class.active]="newPet.vaccinated"
+                                (click)="newPet.vaccinated = !newPet.vaccinated">
+                                {{ newPet.vaccinated ? '✓' : '' }} Vacinado
+                            </button>
+                            <button type="button" [class.active]="newPet.neutered"
+                                (click)="newPet.neutered = !newPet.neutered">
+                                {{ newPet.neutered ? '✓' : '' }} Castrado
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Descrição (Input de texto) -->
+                    <div class="form-group full-width">
+                        <label>Descrição</label>
+                        <textarea [(ngModel)]="newPet.description" placeholder="Descreva o pet (opcional)"></textarea>
+                    </div>
+
+                    <!-- Upload de Imagens -->
+                    <div class="form-group full-width">
+                        <label>Foto do Pet</label>
+                        <input type="file" (change)="onImageSelected($event)" multiple accept="image/*"
+                            class="file-input">
+
+                        <div class="image-preview" *ngIf="selectedImages.length > 0">
+                            <div class="preview-item" *ngFor="let image of selectedImages; let i = index">
+                                <img [src]="getImageUrl(image)" alt="Preview">
+                                <button type="button" class="remove-image" (click)="removeImage(i)">×</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Botões do Formulário -->
+                <div class="form-actions">
+                    <button type="button" class="btn-secondary" (click)="cancelForm()">
+                        Cancelar
+                    </button>
+                    <button type="button" class="btn-primary" (click)="submitPet()">
+                        {{ editingPet ? 'Atualizar' : 'Cadastrar' }} Pet
+                    </button>
+                </div>
+            </div>
+
+            <!-- Lista de Pets -->
+            <div class="pets-list-section" *ngIf="!showAddForm">
+                <!-- Filtros -->
+                <div class="admin-filters">
+                    <input type="text" [(ngModel)]="filterSearch" (input)="applyFilters()"
+                        placeholder="Buscar por nome ou raça...">
+
+                    <select [(ngModel)]="filterType" (change)="applyFilters()">
+                        <option value="">Todos os tipos</option>
+                        <option value="DOG">Cachorros</option>
+                        <option value="CAT">Gatos</option>
+                    </select>
+
+                    <button class="btn-secondary" (click)="clearFilters()"><i class="fa-solid fa-trash"></i> Limpar</button>
+                </div>
+
+                <!-- Lista -->
+                <div class="pets-grid">
+                    <div class="pet-card" *ngFor="let pet of filteredPets">
+                        <div class="pet-info">
+                            <h3>{{ pet.name }}</h3>
+                            <p><strong>Espécie:</strong> {{ pet.species === 'DOG' ? 'Cachorro' : 'Gato' }}</p>
+                            <p><strong>Raça:</strong> {{ pet.breed }}</p>
+                            <p><strong>Idade:</strong> {{ pet.ageCategory }}</p>
+                            <p><strong>Porte:</strong> {{ pet.size }}</p>
+                        </div>
+                        <div class="pet-actions">
+                            <button class="btn-edit" (click)="startEditPet(pet)">
+                                <i class="fa-regular fa-pen-to-square"></i> Editar
+                            </button>
+                            <button class="btn-secondary" (click)="deletePet(pet)">
+                                <i class="fa-solid fa-delete-left"></i> Excluir
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <p *ngIf="filteredPets.length === 0" class="no-pets">
+                    Nenhum pet encontrado.
+                </p>
+            </div>
+        </div>
+    </main>
+    <app-footer />
+</div>

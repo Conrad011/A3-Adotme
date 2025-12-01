@@ -1,0 +1,121 @@
+.footer {
+  background: linear-gradient(180deg, #0d2d46 0%, #0a2236 100%);
+  color: white;
+  padding: 45px 20px;
+  width: 100%;
+  margin-top: 60px;
+
+  display: flex;
+  justify-content: center;
+}
+
+/* Wrapper geral */
+.footer-wrapper {
+  width: 100%;
+  max-width: 900px;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 40px;
+
+  flex-wrap: wrap;
+}
+
+/* -----------------------------------------
+   COLUNA ESQUERDA: LOGO + NOME + TEXTO
+------------------------------------------*/
+.footer-brand h4 {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+
+  font-family: 'Barlow', sans-serif;
+  font-size: 1.7rem;
+  font-weight: 800;
+  margin-bottom: 12px;
+
+  img {
+    width: 38px;
+    height: auto;
+  }
+}
+
+.footer-description {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  max-width: 300px;
+  opacity: 0.85;
+}
+
+/* -----------------------------------------
+   COLUNA DIREITA: REDES SOCIAIS + COPYRIGHT
+------------------------------------------*/
+.footer-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 14px;
+}
+
+.social{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 20px;
+}
+
+.social-label {
+  font-size: 0.9rem;
+  opacity: 0.85;
+}
+
+.social-icons {
+  display: flex;
+  gap: 18px;
+
+  a {
+    color: rgba(255, 255, 255, 0.836);
+    font-size: 1.45rem;
+    transition: 0.2s ease;
+
+    &:hover {
+      color: #ff9900;
+      transform: translateY(-3px);
+    }
+  }
+}
+
+.footer-copy {
+  font-size: 0.82rem;
+  opacity: 0.75;
+  margin-top: 8px;
+  text-align: right;
+}
+
+/* -----------------------------------------
+   RESPONSIVO
+------------------------------------------*/
+@media (max-width: 720px) {
+  .footer-wrapper {
+    flex-direction: column;
+    text-align: center;
+    align-items: center;
+  }
+
+  .footer-right {
+    align-items: center;
+  }
+
+  .footer-copy {
+    text-align: center;
+  }
+
+  .footer-description {
+    max-width: 100%;
+  }
+
+  .footer-brand h4 {
+    justify-content: center;
+  }
+}
